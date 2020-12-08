@@ -21,13 +21,20 @@ public class MainActivity extends AppCompatActivity {
 
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
+        viewModel.getLocalScore().observe(this, localScoreInteger -> {
+            binding.localScoreText.setText(String.valueOf(localScoreInteger));
+        });
+
+        viewModel.getVisitorScore().observe(this, visitorScoreInteger -> {
+            binding.visitorScoreText.setText(String.valueOf(visitorScoreInteger));
+        });
+
         setupButtons();
     }
 
     private void setupButtons() {
         binding.localMinusButton.setOnClickListener(v -> {
             viewModel.decreaseLocal();
-            binding.localScoreText.setText(String.valueOf(viewModel.getLocalScore()));
         });
 
         binding.localPlusButton.setOnClickListener(v -> {
@@ -40,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
 
         binding.visitorMinusButton.setOnClickListener(v -> {
             viewModel.decreaseVisitor();
-            binding.visitorScoreText.setText(String.valueOf(viewModel.getVisitorScore()));
         });
 
         binding.visitorPlusButton.setOnClickListener(v -> {
@@ -62,23 +68,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void resetScores() {
         viewModel.resetScores();
-        binding.visitorScoreText.setText(String.valueOf(viewModel.getLocalScore()));
-        binding.localScoreText.setText(String.valueOf(viewModel.getVisitorScore()));
     }
 
     private void addPointsToScore(int points, Boolean isLocal) {
         viewModel.addPointsToScore(points, isLocal);
-        if (isLocal) {
-            binding.localScoreText.setText(String.valueOf(viewModel.getLocalScore()));
-        } else {
-            binding.visitorScoreText.setText(String.valueOf(viewModel.getVisitorScore()));
-        }
     }
 
     private void startScoreActivity() {
         Intent intent = new Intent(this, ScoreActivity.class);
-        intent.putExtra(ScoreActivity.LOCAL_SCORE_KEY, viewModel.getLocalScore());
-        intent.putExtra(ScoreActivity.VISITOR_SCORE_KEY, viewModel.getVisitorScore());
+        intent.putExtra(ScoreActivity.LOCAL_SCORE_KEY, viewModel.getLocalScore().getValue());
+        intent.putExtra(ScoreActivity.VISITOR_SCORE_KEY, viewModel.getVisitorScore().getValue());
         startActivity(intent);
     }
 }
