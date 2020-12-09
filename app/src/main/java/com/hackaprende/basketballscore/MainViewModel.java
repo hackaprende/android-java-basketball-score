@@ -1,22 +1,23 @@
 package com.hackaprende.basketballscore;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class MainViewModel extends ViewModel {
 
-    private MutableLiveData<Integer> localScore = new MutableLiveData<>();
-    private MutableLiveData<Integer> visitorScore = new MutableLiveData<>();
+    private final MutableLiveData<Integer> localScore = new MutableLiveData<>();
+    private final MutableLiveData<Integer> visitorScore = new MutableLiveData<>();
 
     public MainViewModel() {
         resetScores();
     }
 
-    public MutableLiveData<Integer> getLocalScore() {
+    public LiveData<Integer> getLocalScore() {
         return localScore;
     }
 
-    public MutableLiveData<Integer> getVisitorScore() {
+    public LiveData<Integer> getVisitorScore() {
         return visitorScore;
     }
 
